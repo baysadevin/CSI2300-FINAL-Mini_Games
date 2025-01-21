@@ -1,6 +1,28 @@
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class App{
+    
+    public void gui() {
+        JFrame simonSays = new JFrame("My Swing GUI");
+        JPanel ssPanel = new JPanel();
+        ssPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+    
+        simonSays.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    
+        JLabel label = new JLabel("Hello, Swing!", JLabel.CENTER);
+    
+        simonSays.getContentPane().add(label);
+    
+        simonSays.setSize(300, 200);
+    
+        simonSays.setVisible(true);
+    }
+    
     public static void main(String[] args){
+
+        new gui();
         List easyColors = new ArrayList();
         List mediumColors = new ArrayList();
         List hardColors = new ArrayList();
@@ -22,18 +44,5 @@ public class App{
         hardColors.add("Orange");
         hardColors.add("Black");
         hardColors.add("Pink");
-        
-        JFrame simonSays = new JFrame("My Swing GUI");
-        simonSays.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // Create a JLabel (text label)
-        JLabel label = new JLabel("Hello, Swing!", JLabel.CENTER);
-        simonSays.getContentPane().add(label);
-
-        // Set the size of the window and make it visible
-        simonSays.setSize(300, 200);
-        simonSays.setVisible(true);
     }
-public void newColor(JFrame simonSays){
-
-}
 }
