@@ -8,27 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
 import java.util.Random;
+import javax.swing.Timer;
+
 
 public class App {
 
     public void gui() {
         JFrame simonSays = new JFrame("My Swing GUI");
         JPanel ssPanel = new JPanel();
-        ssPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-
+        ssPanel.setBorder(BorderFactory.createEmptyBorder(200, 200, 100,200));
+        simonSays.setSize(1000, 800);
         simonSays.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JLabel label = new JLabel("Hello, Swing!", JLabel.CENTER);
-
-        simonSays.getContentPane().add(label);
-
-        simonSays.setSize(300, 200);
+        
 
         simonSays.setVisible(true);
 
         JButton easy = new JButton("Easy");
         JButton medium = new JButton("Medium");
         JButton hard = new JButton("Hard");
+        easy.setPreferredSize(new java.awt.Dimension(100, 50));
+        medium.setPreferredSize(new java.awt.Dimension(100, 50));
+        hard.setPreferredSize(new java.awt.Dimension(100, 50));
 
         easy.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -54,8 +55,6 @@ public class App {
     simonSays.add(ssPanel);
     ssPanel.setVisible(true);
     simonSays.setVisible(true);
-    simonSays.setSize(300, 200);
-    simonSays.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 }
 
     public void simonSaysEasy() {
@@ -63,7 +62,7 @@ public class App {
         String[] easyColors = {"RED", "BLUE", "YELLOW", "GREEN"};
 
         JFrame easyFrame = new JFrame("Easy Mode");
-        easyFrame.setSize(300, 200);
+        easyFrame.setSize(1000 , 800);
         easyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
 
@@ -74,8 +73,18 @@ public class App {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                String thisColor = easyColors[new Random().nextInt(easyColors.length)];
+                int rndmnum = new Random().nextInt(easyColors.length);
+                String thisColor = easyColors[rndmnum];
                 easyLabel.setText(thisColor);
+                if (rndmnum == 0) {
+                    easyLabel.setForeground(Color.WHITE);
+                } else if (rndmnum == 1) {
+                    easyLabel.setForeground(Color.WHITE);
+                } else if (rndmnum == 2) {
+                    easyLabel.setForeground(Color.BLACK);
+                } else {
+                    easyLabel.setForeground(Color.BLACK);
+                }
                 easyFrame.getContentPane().setBackground( thisColor == "RED" ? Color.RED : thisColor == "BLUE" ? Color.BLUE : thisColor == "YELLOW" ? Color.YELLOW : Color.GREEN); 
             }
         });
