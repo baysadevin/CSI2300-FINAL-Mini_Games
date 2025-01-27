@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
 import java.util.Random;
-import javax.swing.Timer;
 
 
 public class App {
@@ -69,25 +68,34 @@ public class App {
         JLabel easyLabel = new JLabel("Easy Mode", JLabel.CENTER);
         easyFrame.getContentPane().add(easyLabel);
         Timer timer = new Timer(2000, new ActionListener() {
-            int index = 0;
+            @Override
+    public void actionPerformed(ActionEvent e) {
 
+        easyFrame.getContentPane().setBackground(Color.BLACK);
+
+    
+        Timer flashTimer = new Timer(100, new ActionListener() { 
             @Override
             public void actionPerformed(ActionEvent e) {
                 int rndmnum = new Random().nextInt(easyColors.length);
                 String thisColor = easyColors[rndmnum];
                 easyLabel.setText(thisColor);
-                if (rndmnum == 0) {
+                if (rndmnum == 0 || rndmnum == 1) {
                     easyLabel.setForeground(Color.WHITE);
-                } else if (rndmnum == 1) {
-                    easyLabel.setForeground(Color.WHITE);
-                } else if (rndmnum == 2) {
-                    easyLabel.setForeground(Color.BLACK);
                 } else {
                     easyLabel.setForeground(Color.BLACK);
                 }
-                easyFrame.getContentPane().setBackground( thisColor == "RED" ? Color.RED : thisColor == "BLUE" ? Color.BLUE : thisColor == "YELLOW" ? Color.YELLOW : Color.GREEN); 
+                easyFrame.getContentPane().setBackground(
+                    thisColor.equals("RED") ? Color.RED :
+                    thisColor.equals("BLUE") ? Color.BLUE :
+                    thisColor.equals("YELLOW") ? Color.YELLOW : Color.GREEN
+                );
             }
         });
+        flashTimer.setRepeats(false); 
+        flashTimer.start();
+    }
+});
         timer.start();
 
         easyFrame.addMouseListener(new MouseAdapter() {
@@ -101,69 +109,111 @@ public class App {
 
     }
 
-    public void simonSaysMedium() {
-        System.out.println("Medium mode selected");
-        String[] mediumColors = {"RED", "BLUE", "YELLOW", "GREEN", "PURPLE", "ORANGE"};
-        
-        JFrame mediumFrame = new JFrame("Medium Mode");
-        mediumFrame.setSize(300, 200);
-        mediumFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JLabel mediumLabel = new JLabel("medium Mode", JLabel.CENTER);
-        mediumFrame.getContentPane().add(mediumLabel);
-        Timer timer = new Timer(2000, new ActionListener() {
-            int index = 0;
+public void simonSaysMedium() {
+    System.out.println("Medium mode selected");
+    String[] mediumColors = {"RED", "BLUE", "YELLOW", "GREEN", "ORANGE", "PURPLE"};
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String thisColor = mediumColors[new Random().nextInt(mediumColors.length)];
-                mediumLabel.setText(thisColor);
-                mediumFrame.getContentPane().setBackground( thisColor == "RED" ? Color.RED : thisColor == "BLUE" ? Color.BLUE : thisColor == "YELLOW" ? Color.YELLOW : thisColor == "GREEN" ? Color.GREEN : thisColor == "PURPLE" ? Color.MAGENTA : Color.ORANGE);
-            }
-        });
-        timer.start();
+    JFrame mediumFrame = new JFrame("Medium Mode");
+    mediumFrame.setSize(1000, 800);
+    mediumFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        mediumFrame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                timer.stop();
-            }
-        });
+    JLabel mediumLabel = new JLabel("Medium Mode", JLabel.CENTER);
+    mediumFrame.getContentPane().add(mediumLabel);
+    Timer timer = new Timer(2000, new ActionListener() { // Faster interval for medium mode
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mediumFrame.getContentPane().setBackground(Color.BLACK);
 
-        mediumFrame.setVisible(true);
 
-    }
+            Timer flashTimer = new Timer(100, new ActionListener() { // Longer flash duration
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int rndmnum = new Random().nextInt(mediumColors.length);
+                    String thisColor = mediumColors[rndmnum];
+                    mediumLabel.setText(thisColor);
+                    if (rndmnum == 0 || rndmnum == 1) {
+                        mediumLabel.setForeground(Color.WHITE);
+                    } else {
+                        mediumLabel.setForeground(Color.BLACK);
+                    }
+                    mediumFrame.getContentPane().setBackground(
+                        thisColor.equals("RED") ? Color.RED :
+                        thisColor.equals("BLUE") ? Color.BLUE :
+                        thisColor.equals("YELLOW") ? Color.YELLOW :
+                        thisColor.equals("ORANGE") ? Color.ORANGE :
+                        thisColor.equals("PURPLE") ? Color.MAGENTA : Color.GREEN
+                    );
+                }
+            });
+            flashTimer.setRepeats(false);
+            flashTimer.start();
+        }
+    });
+    timer.start();
 
-    public void simonSaysHard() {
-        System.out.println("Hard mode selected");
-        String[] hardColors = {"Red", "Blue", "Yellow", "Green", "Purple", "Orange", "Black", "Pink"};
-        JFrame hardFrame = new JFrame("Hard Mode");
-        hardFrame.setSize(300, 200);
-        hardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    mediumFrame.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            timer.stop();
+        }
+    });
 
-        JLabel hardLabel = new JLabel("Hard Mode", JLabel.CENTER);
-        hardFrame.getContentPane().add(hardLabel);
-        Timer timer = new Timer(2000, new ActionListener() {
-            int index = 0;
+    mediumFrame.setVisible(true);
+}
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String thisColor = hardColors[new Random().nextInt(hardColors.length)];
-                hardLabel.setText(thisColor);
-                hardFrame.getContentPane().setBackground( thisColor == "Red" ? Color.RED : thisColor == "Blue" ? Color.BLUE : thisColor == "Yellow" ? Color.YELLOW : thisColor == "Green" ? Color.GREEN : thisColor == "Purple" ? Color.MAGENTA : thisColor == "Orange" ? Color.ORANGE : thisColor == "Black" ? Color.BLACK : Color.PINK);
-            }
-        });
-        timer.start();
+public void simonSaysHard() {
+    System.out.println("Hard mode selected");
+    String[] hardColors = {"RED", "BLUE", "YELLOW", "GREEN", "ORANGE", "PURPLE", "PINK", "CYAN"};
 
-        hardFrame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                timer.stop();
-            }
-        });
+    JFrame hardFrame = new JFrame("Hard Mode");
+    hardFrame.setSize(1000, 800);
+    hardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        hardFrame.setVisible(true);
-    }
+    JLabel hardLabel = new JLabel("Hard Mode", JLabel.CENTER);
+    hardFrame.getContentPane().add(hardLabel);
+    Timer timer = new Timer(2000, new ActionListener() { 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            hardFrame.getContentPane().setBackground(Color.BLACK);
+
+
+            Timer flashTimer = new Timer(100, new ActionListener() { // Longer flash duration
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int rndmnum = new Random().nextInt(hardColors.length);
+                    String thisColor = hardColors[rndmnum];
+                    hardLabel.setText(thisColor);
+                    if (rndmnum == 0 || rndmnum == 1) {
+                        hardLabel.setForeground(Color.WHITE);
+                    } else {
+                        hardLabel.setForeground(Color.BLACK);
+                    }
+                    hardFrame.getContentPane().setBackground(
+                        thisColor.equals("RED") ? Color.RED :
+                        thisColor.equals("BLUE") ? Color.BLUE :
+                        thisColor.equals("YELLOW") ? Color.YELLOW :
+                        thisColor.equals("ORANGE") ? Color.ORANGE :
+                        thisColor.equals("PURPLE") ? Color.MAGENTA :
+                        thisColor.equals("PINK") ? Color.PINK : Color.CYAN
+                    );
+                }
+            });
+            flashTimer.setRepeats(false);
+            flashTimer.start();
+        }
+    });
+    timer.start();
+
+    hardFrame.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            timer.stop();
+        }
+    });
+
+    hardFrame.setVisible(true);
+}
 
     public static void main(String[] args) {
         App app = new App();
