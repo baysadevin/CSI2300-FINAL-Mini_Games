@@ -132,7 +132,7 @@ public void simonSaysMedium() {
                     int rndmnum = new Random().nextInt(mediumColors.length);
                     String thisColor = mediumColors[rndmnum];
                     mediumLabel.setText(thisColor);
-                    if (rndmnum == 0 || rndmnum == 1) {
+                    if (rndmnum == 0 || rndmnum == 1 || rndmnum == 2) {
                         mediumLabel.setForeground(Color.WHITE);
                     } else {
                         mediumLabel.setForeground(Color.BLACK);
