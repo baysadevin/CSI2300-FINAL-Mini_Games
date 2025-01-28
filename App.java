@@ -1,11 +1,9 @@
 import javax.swing.*;
 
-import org.w3c.dom.events.MouseEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.awt.Color;
 import java.util.Random;
 
@@ -13,7 +11,7 @@ import java.util.Random;
 public class App {
 
     public void gui() {
-        JFrame simonSays = new JFrame("My Swing GUI");
+        JFrame simonSays = new JFrame("Simon Says");
         JPanel ssPanel = new JPanel();
         ssPanel.setBorder(BorderFactory.createEmptyBorder(200, 200, 100,200));
         simonSays.setSize(1000, 800);
@@ -60,7 +58,7 @@ public class App {
         System.out.println("Easy mode selected");
         String[] easyColors = {"RED", "BLUE", "YELLOW", "GREEN"};
 
-        JFrame easyFrame = new JFrame("Easy Mode");
+        JFrame easyFrame = new JFrame("Simon Says Easy Mode");
         easyFrame.setSize(1000 , 800);
         easyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
@@ -96,8 +94,8 @@ public class App {
         flashTimer.start();
     }
 });
+        timer.setRepeats(false);
         timer.start();
-
         easyFrame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -118,7 +116,7 @@ public void simonSaysMedium() {
     mediumFrame.setSize(1000, 800);
     mediumFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-    JLabel mediumLabel = new JLabel("Medium Mode", JLabel.CENTER);
+    JLabel mediumLabel = new JLabel("Simon Says Medium Mode", JLabel.CENTER);
     mediumFrame.getContentPane().add(mediumLabel);
     Timer timer = new Timer(2000, new ActionListener() { // Faster interval for medium mode
         @Override
@@ -166,7 +164,7 @@ public void simonSaysHard() {
     System.out.println("Hard mode selected");
     String[] hardColors = {"RED", "BLUE", "YELLOW", "GREEN", "ORANGE", "PURPLE", "PINK", "CYAN"};
 
-    JFrame hardFrame = new JFrame("Hard Mode");
+    JFrame hardFrame = new JFrame("Simon Says Hard Mode");
     hardFrame.setSize(1000, 800);
     hardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
