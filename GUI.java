@@ -19,15 +19,15 @@ public class GUI {
         JButton exitButton = new JButton("Exit");
 
         simonSaysButton.addActionListener(e -> {
-            // Simon Says logic here
+            new SimonSays().simonSays();
             System.out.println("Simon Says Selected");
         });
         sliderColorsButton.addActionListener(e -> {
-            // Slider Colors logic here
+            new SliderColor().sliderColor();
             System.out.println("Slider Colors Selected");
         });
         hangManButton.addActionListener(e -> {
-            // HangMan logic here
+            new HangMan().hangMan();
             System.out.println("HangMan Selected");
         });
 
@@ -48,7 +48,7 @@ public class GUI {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label2.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setFont(new Font("Serif", Font.PLAIN, 40));
-        
+
         panel.add(label);
         panel.add(label2);
         panel.add(Box.createRigidArea(new Dimension(0, gapHeight)));
