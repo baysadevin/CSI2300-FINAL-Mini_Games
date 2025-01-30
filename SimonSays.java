@@ -4,7 +4,7 @@ import java.awt.*;
 public class SimonSays {
     public void simonSays() {
         JFrame ssframe = new JFrame("Simon Says");
-        ssframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ssframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ssframe.setSize(1000, 1200);
         ssframe.setVisible(true);
         JPanel ssPanel = new JPanel();
@@ -15,7 +15,11 @@ public class SimonSays {
         JButton yellowButton = new JButton("Yellow");
         JButton startButton = new JButton("Start");
         JButton submitButton = new JButton("Submit");
-        JButton resetButton = new JButton("Reset");
+        JButton exitButton = new JButton("Exit");
+
+        JLabel label = new JLabel("High Score: ");
+        JLabel label2 = new JLabel("Score: ");
+
 
         greenButton.setPreferredSize(new Dimension(200, 200));
         redButton.setPreferredSize(new Dimension(200, 200));
@@ -33,6 +37,15 @@ public class SimonSays {
         });
         yellowButton.addActionListener(e -> {
             System.out.println("Yellow");
+        });
+        startButton.addActionListener(e -> {
+            System.out.println("Start");
+        });
+        submitButton.addActionListener(e -> {
+            System.out.println("Submit");
+        });
+        exitButton.addActionListener(e -> {
+            ssframe.dispose();
         });
 
         greenButton.setOpaque(true);
@@ -59,13 +72,22 @@ public class SimonSays {
         blueButton.setForeground(Color.WHITE);
         yellowButton.setBackground(Color.YELLOW);
         yellowButton.setForeground(Color.BLACK);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label2.setHorizontalAlignment(JLabel.CENTER);
         ssPanel.add(greenButton);
         ssPanel.add(redButton);
+        ssPanel.add(label);
         ssPanel.add(blueButton);
         ssPanel.add(yellowButton);
+        ssPanel.add(label2);
         ssPanel.add(startButton);
-        ssPanel.add(resetButton);
-        ssPanel.setLayout(new GridLayout(3, 2));
+        ssPanel.add(submitButton);
+        ssPanel.add(exitButton);
+        ssPanel.setLayout(new GridLayout(3, 3));
         ssframe.add(ssPanel);
+        ssframe.setVisible(true);
+    }
+    public static void main(String[] args) {
+        new SimonSays().simonSays();
     }
 }

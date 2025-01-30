@@ -27,7 +27,7 @@ public class GUI {
             System.out.println("Slider Colors Selected");
         });
         hangManButton.addActionListener(e -> {
-            new HangMan().hangMan();
+            new HangMan();
             System.out.println("HangMan Selected");
         });
 
