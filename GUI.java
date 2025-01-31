@@ -48,7 +48,7 @@ public class GUI {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label2.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setFont(new Font("Serif", Font.PLAIN, 40));
-
+        
         panel.add(label);
         panel.add(label2);
         panel.add(Box.createRigidArea(new Dimension(0, gapHeight)));
