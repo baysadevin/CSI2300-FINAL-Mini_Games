@@ -73,18 +73,6 @@ public class SimonSays {
         ssframe.add(ssPanel);
         ssframe.setVisible(true);
 
-        greenButton.addActionListener(e -> {
-            SimonSays.colorFlash(blueButton, 2);
-        });
-        redButton.addActionListener(e -> {
-            System.out.println("Red");
-        });
-        blueButton.addActionListener(e -> {
-            System.out.println("Blue");
-        });
-        yellowButton.addActionListener(e -> {
-            System.out.println("Yellow");
-        });
         startButton.addActionListener(e -> {
             SimonSays.gameLoop();
         });
@@ -110,19 +98,20 @@ public class SimonSays {
 
     }
     public static void gameLoop() {
-        int[] sequence= {0, 1, 2, 3};
+        int[] sequence= new int[100];
         int[] playerSequence = new int[100];
         int score = 0;
         int highScore = 0;
         int sequenceLength = 1;
         boolean gameRunning = true;
+        
         while (gameRunning) {
             for (int i = 0; i < sequenceLength; i++) {
                 int random = (int) (Math.random() * 4);
                 sequence[i] = random;
                 System.out.println(random);
                 System.out.println(sequence[i]);
-                for(int item : sequence) {
+                for (int item : sequence) {
                     switch (item) {
                         case 0:
                             colorFlash(greenButton, 2);
@@ -136,25 +125,58 @@ public class SimonSays {
                         case 3:
                             colorFlash(yellowButton, 2);
                             break;
-
-                    
                     }
                     try {
                         Thread.sleep(2000); // Pause for 2 seconds
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-
+                    }
+                System.out.println("for loop 1");
                 }
-
-
             }
-            gameRunning = false;
+        
+        // Add action listeners to buttons outside of the loop
+        blueButton.addActionListener(e -> {
+            playerSequence[playerSequenceLength] = 2;
+            playerSequenceLength++;
+        });
+        greenButton.addActionListener(e -> {
+            playerSequence[playerSequenceLength] = 0;
+            playerSequenceLength++;
+        });
+        redButton.addActionListener(e -> {
+            playerSequence[playerSequenceLength] = 1;
+            playerSequenceLength++;
+        });
+        yellowButton.addActionListener(e -> {
+            playerSequence[playerSequenceLength] = 3;
+            playerSequenceLength++;
+        });
 
+        // Wait for player input
+        while (playerSequenceLength < sequenceLength) {
+            // Busy wait (not ideal, but for simplicity)
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-    }
 
+        // Check player sequence
+        for (int j = 0; j < sequenceLength; j++) {
+            if (sequence[j] != playerSequence[j]) {
+                gameRunning = false;
+                break;
+            }
+        }
+
+        // Increase sequence length for next round
+        sequenceLength++;
     }
-    public static void main(String[] args) {
-        new SimonSays().simonSays();
-    }
+}
+
+public static void main(String[] args) {
+    new SimonSays().simonSays();
+}
 }
