@@ -1,6 +1,12 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 
 public class GUI {
@@ -23,7 +29,8 @@ public class GUI {
             System.out.println("Simon Says Selected");
         });
         sliderColorsButton.addActionListener(e -> {
-            new SliderColor().sliderColor();
+            new SliderColor();
+            SliderColor.sliderColor();
             System.out.println("Slider Colors Selected");
         });
         hangManButton.addActionListener(e -> {

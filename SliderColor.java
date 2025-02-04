@@ -10,9 +10,9 @@ import java.util.Random;
 
 public class SliderColor {
 
-    public static void main(String[] args) {
+    public static void sliderColor() {
         JFrame frame = new JFrame("Slider Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1000, 1200);
         frame.getContentPane().setLayout(new BorderLayout());
 
@@ -142,5 +142,8 @@ public class SliderColor {
         double maxDistance = Math.sqrt(Math.pow(255, 2) * 3);
 
         return 1 - (distance / maxDistance);
+    }
+    static void main(String[] args) {
+        sliderColor();
     }
 }
