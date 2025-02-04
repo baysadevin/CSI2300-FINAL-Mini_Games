@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionListener;
@@ -12,15 +14,18 @@ public class SliderColor {
         JFrame frame = new JFrame("Slider Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 1200);
+        frame.getContentPane().setLayout(new BorderLayout());
 
         JPanel panel = new JPanel();
+        panel.setSize(900, 1100);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        frame.add(panel);
-
+        Border border = BorderFactory.createLineBorder(Color.BLACK, 5);
+        panel.setBorder(border);
         // Create labels for the sliders
         JLabel redLabel = new JLabel("Red", JLabel.CENTER);
         JLabel greenLabel = new JLabel("Green", JLabel.CENTER);
         JLabel blueLabel = new JLabel("Blue", JLabel.CENTER);
+        
 
         // Create sliders for red, green, and blue
         JSlider redSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 0);
@@ -31,21 +36,25 @@ public class SliderColor {
         redSlider.setMinorTickSpacing(10);
         redSlider.setPaintTicks(true);
         redSlider.setPaintLabels(true);
+        redSlider.setBorder(border);
 
         greenSlider.setMajorTickSpacing(50);
         greenSlider.setMinorTickSpacing(10);
         greenSlider.setPaintTicks(true);
         greenSlider.setPaintLabels(true);
+        greenSlider.setBorder(border);
 
         blueSlider.setMajorTickSpacing(50);
         blueSlider.setMinorTickSpacing(10);
         blueSlider.setPaintTicks(true);
         blueSlider.setPaintLabels(true);
+        blueSlider.setBorder(border);
 
         // Create a label that changes color
         JLabel changingLabel = new JLabel("Color Label", JLabel.CENTER);
         changingLabel.setOpaque(true);
         changingLabel.setBackground(Color.BLACK);
+        changingLabel.setBorder(border);
 
         // Create a label with a random color
         JLabel randomColorLabel = new JLabel("Random Color Label", JLabel.CENTER);
@@ -60,6 +69,7 @@ public class SliderColor {
         System.out.println(red + " " + green + " " + blue);
         
         randomColorLabel.setBackground(randomColor);
+        randomColorLabel.setBorder(border);
 
         // Add a ChangeListener to the sliders
         ChangeListener changeListener = new ChangeListener() {
@@ -96,20 +106,26 @@ public class SliderColor {
             }
         });
 
-        // Add the sliders, labels, and button to the frame
-        panel.setLayout(new GridLayout(9, 1));
+        // Add the sliders, labels, and button to the  panel
+        panel.setLayout(new GridLayout(5, 2));
         panel.add(redLabel);
+        redLabel.setBorder(border);
         panel.add(redSlider);
         panel.add(greenLabel);
+        greenLabel.setBorder(border);
         panel.add(greenSlider);
         panel.add(blueLabel);
+        blueLabel.setBorder(border);
         panel.add(blueSlider);
-        panel.add(changingLabel);
         panel.add(randomColorLabel);
+        panel.add(changingLabel);
         panel.add(submitButton);
+        submitButton.setBorder(border);
         panel.add(resultLabel);
+        resultLabel.setBorder(border);
+        
 
-        panel.setVisible(true);
+        frame.add(panel);        
         frame.setVisible(true);
     }
 
