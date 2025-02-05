@@ -14,6 +14,7 @@ public class SimonSays {
     private static JButton submitButton = new JButton("Submit");
     private static JButton exitButton = new JButton("Exit");
     public static int playerSequenceLength = 1;
+    @SuppressWarnings("unused")
     public void simonSays() {
         JFrame ssframe = new JFrame("Simon Says");
         ssframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -101,7 +102,6 @@ public class SimonSays {
         int[] sequence= new int[100];
         int[] playerSequence = new int[100];
         int score = 0;
-        int highScore = 0;
         int sequenceLength = 1;
         boolean gameRunning = true;
         

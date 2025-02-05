@@ -1,11 +1,6 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Random;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 
 
@@ -13,6 +8,7 @@ public class GUI {
     static int buttonHeight = 100;
     static int buttonSides = 10;
     static int gapHeight = 50;
+    @SuppressWarnings("unused")
     public static void mainMenu(){
         JFrame frame = new JFrame("Mini Games");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
