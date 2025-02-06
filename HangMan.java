@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class HangMan {
     private String word;
@@ -18,7 +20,56 @@ public class HangMan {
     private JButton guessButton;
     private JButton solveButton;
 
-    public void hangMan(String categoryName) {
+    public void hangMan() {
+        SwingUtilities.invokeLater(() -> {
+            JFrame categoryFrame = new JFrame("Select Category");
+            categoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            categoryFrame.setSize(1000, 1200);
+            categoryFrame.setLayout(new GridBagLayout());
+
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.insets = new Insets(10, 10, 10, 10);
+
+            JLabel categoryLabel = new JLabel("Select a category:", JLabel.CENTER);
+            categoryLabel.setFont(new Font("Serif", Font.PLAIN, 40));
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 2;
+            gbc.weightx = 1;
+            gbc.weighty = 0.1;
+            categoryFrame.add(categoryLabel, gbc);
+
+            String[] categories = {"Animals", "Fruits", "Countries", "Cities", "Sports", "Movies", "Books", "Music", "Food", "Colors"};
+            JComboBox<String> categoryComboBox = new JComboBox<>(categories);
+            categoryComboBox.setFont(new Font("Serif", Font.PLAIN, 30));
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 2;
+            gbc.weightx = 1;
+            gbc.weighty = 0.8;
+            categoryFrame.add(categoryComboBox, gbc);
+
+            JButton startButton = new JButton("Start Game");
+            startButton.setFont(new Font("Serif", Font.PLAIN, 40));
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            gbc.gridwidth = 2;
+            gbc.weightx = 1;
+            gbc.weighty = 0.1;
+            categoryFrame.add(startButton, gbc);
+
+            startButton.addActionListener(e -> {
+                String selectedCategory = (String) categoryComboBox.getSelectedItem();
+                categoryFrame.dispose();
+                startGame(selectedCategory);
+            });
+
+            categoryFrame.setVisible(true);
+        });
+    }
+
+    private void startGame(String categoryName) {
         loadRandomWord(categoryName);
         guessedWord = new StringBuilder("_ ".repeat(word.length()));
         guessedLetters = new HashSet<>();
@@ -71,7 +122,7 @@ public class HangMan {
                 wordLabel.setText("Word: " + guessedWord.toString());
                 attemptsLabel.setText("Attempts left: " + attempts);
                 guessField.setText("");
-                
+
                 if (guessedWord.toString().replace(" ", "").equals(word)) {
                     JOptionPane.showMessageDialog(frame, "Congratulations! You guessed the word: " + word);
                     resetGame(categoryName);
@@ -114,7 +165,7 @@ public class HangMan {
         frame.add(wordLabel, BorderLayout.CENTER);
         frame.add(attemptsLabel, BorderLayout.SOUTH);
         frame.add(inputPanel, BorderLayout.SOUTH);
-        frame.add(attemptsLabel, BorderLayout.NORTH);
+
         frame.setVisible(true);
     }
 
@@ -148,54 +199,8 @@ public class HangMan {
         attemptsLabel.setText("Attempts left: " + attempts);
     }
 
-    @SuppressWarnings("unused")
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame categoryFrame = new JFrame("Select Category");
-            categoryFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            categoryFrame.setSize(1000, 1200);
-            categoryFrame.setLayout(new GridBagLayout());
-
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.fill = GridBagConstraints.BOTH;
-            gbc.insets = new Insets(10, 10, 10, 10);
-
-            JLabel categoryLabel = new JLabel("Select a category:", JLabel.CENTER);
-            categoryLabel.setFont(new Font("Serif", Font.PLAIN, 40));
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.gridwidth = 2;
-            gbc.weightx = 1;
-            gbc.weighty = 0.1;
-            categoryFrame.add(categoryLabel, gbc);
-
-            String[] categories = {"Animals", "Fruits", "Countries", "Cities", "Sports", "Movies", "Books", "Music", "Food", "Colors"};
-            JComboBox<String> categoryComboBox = new JComboBox<>(categories);
-            categoryComboBox.setFont(new Font("Serif", Font.PLAIN, 30));
-            gbc.gridx = 0;
-            gbc.gridy = 1;
-            gbc.gridwidth = 2;
-            gbc.weightx = 1;
-            gbc.weighty = 0.8;
-            categoryFrame.add(categoryComboBox, gbc);
-
-            JButton startButton = new JButton("Start Game");
-            startButton.setFont(new Font("Serif", Font.PLAIN, 40));
-            gbc.gridx = 0;
-            gbc.gridy = 2;
-            gbc.gridwidth = 2;
-            gbc.weightx = 1;
-            gbc.weighty = 0.1;
-            categoryFrame.add(startButton, gbc);
-
-            startButton.addActionListener(e -> {
-                String selectedCategory = (String) categoryComboBox.getSelectedItem();
-                categoryFrame.dispose();
-                HangMan game = new HangMan();
-                game.hangMan(selectedCategory);
-            });
-
-            categoryFrame.setVisible(true);
-        });
+        HangMan game = new HangMan();
+        game.hangMan();
     }
 }

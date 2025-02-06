@@ -21,8 +21,8 @@ public class GUI {
         JButton exitButton = new JButton("Exit");
 
         simonSaysButton.addActionListener(e -> {
-            new SimonSays().simonSays();
-            System.out.println("Simon Says Selected");
+            new SimonSays();
+
         });
         sliderColorsButton.addActionListener(e -> {
             new SliderColor();
@@ -31,7 +31,8 @@ public class GUI {
         });
         hangManButton.addActionListener(e -> {
             new HangMan();
-            System.out.println("HangMan Selected");
+            HangMan hangMan = new HangMan();
+            hangMan.hangMan();
         });
 
         exitButton.addActionListener(e -> {

@@ -1,141 +1,90 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
+
 public class SimonSays {
-    private int borderThickness = 5;
+    private JFrame frame;
+    private JButton startButton;
+    private JButton blueButton;
+    private JButton greenButton;
+    private JButton redButton;
+    private JButton yellowButton;
+    private JButton submitButton;
+    private JLabel scoreLabel;
+    private JLabel highScoreLabel;
+    private int[] sequence;
+    private int[] playerSequence;
+    private int sequenceLength;
+    private int playerSequenceLength;
+    private int score;
+    private int highScore;
+    private Random random;
 
-    private static JButton greenButton = new JButton("Green");
-    private static JButton redButton = new JButton("Red");
-    private static JButton blueButton = new JButton("Blue");
-    private static JButton yellowButton = new JButton("Yellow");
-    private static JButton startButton = new JButton("Start");
-    private static JButton submitButton = new JButton("Submit");
-    private static JButton exitButton = new JButton("Exit");
-    public static int playerSequenceLength = 1;
-    @SuppressWarnings("unused")
-    public void simonSays() {
-        JFrame ssframe = new JFrame("Simon Says");
-        ssframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        ssframe.setSize(1000, 1200);
-        ssframe.setVisible(true);
-        JPanel ssPanel = new JPanel();
-        ssPanel.setSize(900, 1100);
+    public SimonSays() {
+        frame = new JFrame("Simon Says");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(1000, 1200);
+        frame.setLayout(new GridLayout(4, 2));
 
-
-        JLabel label = new JLabel("High Score: ");
-        JLabel label2 = new JLabel("Score: ");
-
-
-        greenButton.setPreferredSize(new Dimension(200, 200));
-        redButton.setPreferredSize(new Dimension(200, 200));
-        blueButton.setPreferredSize(new Dimension(200, 200));
-        yellowButton.setPreferredSize(new Dimension(200, 200));
-
-
-
-        greenButton.setOpaque(true);
-        greenButton.setContentAreaFilled(true);
-        greenButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, borderThickness));
-        greenButton.setFocusPainted(false);
-        redButton.setOpaque(true);
-        redButton.setContentAreaFilled(true);
-        redButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, borderThickness));
-        redButton.setFocusPainted(false);
+        startButton = new JButton("Start");
+        blueButton = new JButton();
+        blueButton.setBackground(Color.BLUE);
         blueButton.setOpaque(true);
         blueButton.setContentAreaFilled(true);
-        blueButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, borderThickness));
+        blueButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         blueButton.setFocusPainted(false);
+
+        greenButton = new JButton();
+        greenButton.setOpaque(true);
+        greenButton.setContentAreaFilled(true);
+        greenButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        greenButton.setFocusPainted(false);
+        greenButton.setBackground(Color.GREEN);
+
+        redButton = new JButton();
+        redButton.setBackground(Color.RED);
+        redButton.setOpaque(true);
+        redButton.setContentAreaFilled(true);
+        redButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        redButton.setFocusPainted(false);
+
+        yellowButton = new JButton();
+        yellowButton.setBackground(Color.YELLOW);
         yellowButton.setOpaque(true);
         yellowButton.setContentAreaFilled(true);
-        yellowButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, borderThickness));
+        yellowButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         yellowButton.setFocusPainted(false);
-        greenButton.setBackground(Color.GREEN);
-        greenButton.setForeground(Color.BLACK);
-        redButton.setBackground(Color.RED);
-        redButton.setForeground(Color.WHITE);
-        blueButton.setBackground(Color.BLUE);
-        blueButton.setForeground(Color.WHITE);
-        yellowButton.setBackground(Color.YELLOW);
-        yellowButton.setForeground(Color.BLACK);
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label2.setHorizontalAlignment(JLabel.CENTER);
-        ssPanel.add(greenButton);
-        ssPanel.add(redButton);
-        ssPanel.add(label);
-        ssPanel.add(blueButton);
-        ssPanel.add(yellowButton);
-        ssPanel.add(label2);
-        ssPanel.add(startButton);
-        ssPanel.add(submitButton);
-        ssPanel.add(exitButton);
-        ssPanel.setLayout(new GridLayout(3, 3));
-        ssframe.add(ssPanel);
-        ssframe.setVisible(true);
 
-        startButton.addActionListener(e -> {
-            SimonSays.gameLoop();
-        });
-        submitButton.addActionListener(e -> {
-            System.out.println("Submit");
-        });
-        exitButton.addActionListener(e -> {
-            ssframe.dispose();
-        });
-        
-    }
-    public static void colorFlash(JButton button , int seconds) {
-            button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
-            int fullSecond = seconds * 1000;
-            Timer timer = new Timer(fullSecond, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-                }
-            });
-            timer.setRepeats(false);
-            timer.start();
+        submitButton = new JButton("Submit");
 
-    }
-    public static void gameLoop() {
-        int[] sequence= new int[100];
-        int[] playerSequence = new int[100];
-        int score = 0;
-        int sequenceLength = 1;
-        boolean gameRunning = true;
-        
-        while (gameRunning) {
-            for (int i = 0; i < sequenceLength; i++) {
-                int random = (int) (Math.random() * 4);
-                sequence[i] = random;
-                System.out.println(random);
-                System.out.println(sequence[i]);
-                for (int item : sequence) {
-                    switch (item) {
-                        case 0:
-                            colorFlash(greenButton, 2);
-                            break;
-                        case 1:
-                            colorFlash(redButton, 2);
-                            break;
-                        case 2:
-                            colorFlash(blueButton, 2);
-                            break;
-                        case 3:
-                            colorFlash(yellowButton, 2);
-                            break;
-                    }
-                    try {
-                        Thread.sleep(2000); // Pause for 2 seconds
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                System.out.println("for loop 1");
-                }
-            }
-        
-        // Add action listeners to buttons outside of the loop
+        scoreLabel = new JLabel("Score: 0", JLabel.CENTER);
+        scoreLabel.setFont(new Font("Serif", Font.PLAIN, 30));
+        highScoreLabel = new JLabel("High Score: 0", JLabel.CENTER);
+        highScoreLabel.setFont(new Font("Serif", Font.PLAIN, 30));
+
+        frame.add(startButton);
+        frame.add(new JLabel()); // Empty label for spacing
+        frame.add(blueButton);
+        frame.add(greenButton);
+        frame.add(redButton);
+        frame.add(yellowButton);
+        frame.add(submitButton);
+        frame.add(scoreLabel);
+        frame.add(highScoreLabel);
+
+        sequence = new int[100]; // Arbitrary large size for the sequence
+        playerSequence = new int[100];
+        sequenceLength = 0;
+        playerSequenceLength = 0;
+        score = 0;
+        highScore = 0;
+        random = new Random();
+
+        startButton.addActionListener(e -> startGame());
+        submitButton.addActionListener(e -> checkSequence());
+
         blueButton.addActionListener(e -> {
             playerSequence[playerSequenceLength] = 2;
             playerSequenceLength++;
@@ -153,30 +102,87 @@ public class SimonSays {
             playerSequenceLength++;
         });
 
-        // Wait for player input
-        while (playerSequenceLength < sequenceLength) {
-            // Busy wait (not ideal, but for simplicity)
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        frame.setVisible(true);
+    }
 
-        // Check player sequence
-        for (int j = 0; j < sequenceLength; j++) {
-            if (sequence[j] != playerSequence[j]) {
-                gameRunning = false;
-                break;
-            }
-        }
+    private void startGame() {
+        sequenceLength = 0;
+        playerSequenceLength = 0;
+        score = 0;
+        scoreLabel.setText("Score: " + score);
+        generateSequence();
+        playSequence();
+    }
 
-        // Increase sequence length for next round
+    private void generateSequence() {
+        sequence[sequenceLength] = random.nextInt(4);
         sequenceLength++;
     }
-}
 
-public static void main(String[] args) {
-    new SimonSays().simonSays();
-}
+    private void playSequence() {
+        new Thread(() -> {
+            for (int i = 0; i < sequenceLength; i++) {
+                switch (sequence[i]) {
+                    case 0:
+                        colorFlash(greenButton, 2);
+                        break;
+                    case 1:
+                        colorFlash(redButton, 2);
+                        break;
+                    case 2:
+                        colorFlash(blueButton, 2);
+                        break;
+                    case 3:
+                        colorFlash(yellowButton, 2);
+                        break;
+                }
+                try {
+                    Thread.sleep(1500); // Pause for 1.5 seconds between flashes to include the gap
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void colorFlash(JButton button, int duration) {
+        Color originalColor = button.getBackground();
+        button.setBackground(Color.WHITE);
+        new Timer(duration * 500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.setBackground(originalColor);
+                ((Timer) e.getSource()).stop();
+            }
+        }).start();
+    }
+
+    private void checkSequence() {
+        if (playerSequenceLength != sequenceLength) {
+            JOptionPane.showMessageDialog(frame, "Game Over! You reached a sequence length of " + sequenceLength);
+            if (score > highScore) {
+                highScore = score;
+                highScoreLabel.setText("High Score: " + highScore);
+            }
+            return;
+        }
+        for (int i = 0; i < sequenceLength; i++) {
+            if (sequence[i] != playerSequence[i]) {
+                if (score > highScore) {
+                    highScore = score;
+                    highScoreLabel.setText("High Score: " + highScore);
+                }
+                return;
+            }
+        }
+        playerSequenceLength = 0;
+        score++;
+        scoreLabel.setText("Score: " + score);
+        generateSequence();
+        playSequence();
+    }
+
+    public static void main(String[] args) {
+        new SimonSays();
+    }
 }
