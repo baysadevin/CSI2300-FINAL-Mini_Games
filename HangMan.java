@@ -59,7 +59,7 @@ public class HangMan {
             gbc.weighty = 0.1;
             categoryFrame.add(startButton, gbc);
 
-            startButton.addActionListener(e -> {
+            startButton.addActionListener(_ -> {
                 String selectedCategory = (String) categoryComboBox.getSelectedItem();
                 categoryFrame.dispose();
                 startGame(selectedCategory);

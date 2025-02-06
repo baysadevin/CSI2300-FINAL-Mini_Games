@@ -82,22 +82,22 @@ public class SimonSays {
         highScore = 0;
         random = new Random();
 
-        startButton.addActionListener(e -> startGame());
-        submitButton.addActionListener(e -> checkSequence());
+        startButton.addActionListener(_ -> startGame());
+        submitButton.addActionListener(_ -> checkSequence());
 
-        blueButton.addActionListener(e -> {
+        blueButton.addActionListener(_ -> {
             playerSequence[playerSequenceLength] = 2;
             playerSequenceLength++;
         });
-        greenButton.addActionListener(e -> {
+        greenButton.addActionListener(_ -> {
             playerSequence[playerSequenceLength] = 0;
             playerSequenceLength++;
         });
-        redButton.addActionListener(e -> {
+        redButton.addActionListener(_ -> {
             playerSequence[playerSequenceLength] = 1;
             playerSequenceLength++;
         });
-        yellowButton.addActionListener(e -> {
+        yellowButton.addActionListener(_ -> {
             playerSequence[playerSequenceLength] = 3;
             playerSequenceLength++;
         });
