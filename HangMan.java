@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 public class HangMan {
     private String word;
@@ -31,34 +29,51 @@ public class HangMan {
             gbc.fill = GridBagConstraints.BOTH;
             gbc.insets = new Insets(10, 10, 10, 10);
 
+            // Add the category label
             JLabel categoryLabel = new JLabel("Select a category:", JLabel.CENTER);
             categoryLabel.setFont(new Font("Serif", Font.PLAIN, 40));
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 2;
             gbc.weightx = 1;
-            gbc.weighty = 0.1;
+            gbc.weighty = 1; // Equal vertical weight
             categoryFrame.add(categoryLabel, gbc);
 
+            // Add the category dropdown
             String[] categories = {"Animals", "Fruits", "Countries", "Cities", "Sports", "Movies", "Books", "Music", "Food", "Colors"};
             JComboBox<String> categoryComboBox = new JComboBox<>(categories);
-            categoryComboBox.setFont(new Font("Serif", Font.PLAIN, 30));
+            categoryComboBox.setFont(new Font("Serif", Font.PLAIN, 20));
+
+            // Set the preferred size of the JComboBox to adjust its height
+            categoryComboBox.setPreferredSize(new Dimension(400, 60)); // Adjust width and height as needed
+            categoryComboBox.setBounds(50, 100, 400, 300); // Set bounds for the JComboBox
+            // Set a custom renderer to adjust the height of the dropdown items
+            categoryComboBox.setRenderer(new DefaultListCellRenderer() {
+                @Override
+                public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                    JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    label.setPreferredSize(new Dimension(0, 50)); // Adjust the height of each dropdown item
+                    return label;
+                }
+            });
             gbc.gridx = 0;
             gbc.gridy = 1;
             gbc.gridwidth = 2;
             gbc.weightx = 1;
-            gbc.weighty = 0.8;
+            gbc.weighty = 0; // Equal vertical weight
             categoryFrame.add(categoryComboBox, gbc);
 
+            // Add the start button
             JButton startButton = new JButton("Start Game");
             startButton.setFont(new Font("Serif", Font.PLAIN, 40));
             gbc.gridx = 0;
             gbc.gridy = 2;
             gbc.gridwidth = 2;
             gbc.weightx = 1;
-            gbc.weighty = 0.1;
+            gbc.weighty = 1; // Equal vertical weight
             categoryFrame.add(startButton, gbc);
 
+            // Add action listener to the start button
             startButton.addActionListener(_ -> {
                 String selectedCategory = (String) categoryComboBox.getSelectedItem();
                 categoryFrame.dispose();
@@ -71,7 +86,6 @@ public class HangMan {
 
     private void startGame(String categoryName) {
         loadRandomWord(categoryName);
-        guessedWord = new StringBuilder("_ ".repeat(word.length()));
         guessedLetters = new HashSet<>();
         attempts = 6; // Number of allowed incorrect attempts
 
@@ -86,8 +100,23 @@ public class HangMan {
         wordLabel.setFont(new Font("Serif", Font.PLAIN, 40));
         attemptsLabel = new JLabel("Attempts left: " + attempts, JLabel.CENTER);
         attemptsLabel.setFont(new Font("Serif", Font.PLAIN, 30));
+
         guessField = new JTextField(10);
         guessField.setFont(new Font("Serif", Font.PLAIN, 30));
+
+        // Add ActionListener to allow pressing "Enter" to submit the guess
+        guessField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String input = guessField.getText().trim().toLowerCase();
+                if (input.length() == 1) {
+                    guessButton.doClick(); // Simulate a button click on the "Guess Letter" button
+                } else if (input.length() > 1) {
+                    solveButton.doClick(); // Simulate a button click on the "Solve Word" button
+                }
+            }
+        });
+
         guessButton = new JButton("Guess Letter");
         guessButton.setFont(new Font("Serif", Font.PLAIN, 30));
         solveButton = new JButton("Solve Word");
@@ -161,10 +190,13 @@ public class HangMan {
         inputPanel.add(guessButton);
         inputPanel.add(solveButton);
 
-        frame.add(categoryLabel, BorderLayout.NORTH);
-        frame.add(wordLabel, BorderLayout.CENTER);
-        frame.add(attemptsLabel, BorderLayout.SOUTH);
-        frame.add(inputPanel, BorderLayout.SOUTH);
+        JPanel topPanel = new JPanel(new GridLayout(2, 1));
+        topPanel.add(categoryLabel);
+        topPanel.add(attemptsLabel);
+
+        frame.add(topPanel, BorderLayout.NORTH); // Add category and attempts to the top
+        frame.add(wordLabel, BorderLayout.CENTER); // Add the word display to the center
+        frame.add(inputPanel, BorderLayout.SOUTH); // Add input panel to the bottom
 
         frame.setVisible(true);
     }
@@ -188,15 +220,25 @@ public class HangMan {
 
         Random random = new Random();
         word = words.get(random.nextInt(words.size())).toLowerCase();
+
+        // Initialize guessedWord with underscores and automatically fill spaces
+        guessedWord = new StringBuilder();
+        for (char c : word.toCharArray()) {
+            if (c == ' ') {
+                guessedWord.append("  "); // Add a space for spaces in the word
+            } else {
+                guessedWord.append("_ ");
+            }
+        }
     }
 
     private void resetGame(String categoryName) {
         loadRandomWord(categoryName);
-        guessedWord = new StringBuilder("_ ".repeat(word.length()));
         guessedLetters = new HashSet<>();
         attempts = 6;
         wordLabel.setText("Word: " + guessedWord.toString());
         attemptsLabel.setText("Attempts left: " + attempts);
+        guessField.setText(""); // Clear the text box
     }
 
     public static void main(String[] args) {
