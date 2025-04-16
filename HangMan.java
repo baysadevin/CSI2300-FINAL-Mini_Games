@@ -16,7 +16,6 @@ public class HangMan {
     private JTextField guessField;
     private JButton guessButton;
     private JButton solveButton;
-
     public void hangMan() {
         SwingUtilities.invokeLater(() -> {
             JFrame categoryFrame = new JFrame("Select Category");

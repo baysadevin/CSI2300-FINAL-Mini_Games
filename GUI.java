@@ -35,17 +35,15 @@ public class GUI {
 
         // Add action listeners for buttons
         simonSaysButton.addActionListener(e -> {
-            new SimonSays();
+            SimonSays game = new SimonSays();
         });
         sliderColorsButton.addActionListener(e -> {
-            new SliderColor();
-            SliderColor.sliderColor();
+            SliderColor.sliderColor(); // Launch the SliderColor GUI
             System.out.println("Slider Colors Selected");
         });
         hangManButton.addActionListener(e -> {
-            new HangMan();
             HangMan hangMan = new HangMan();
-            hangMan.hangMan();
+            hangMan.hangMan(); // This starts the Hangman game
         });
         exitButton.addActionListener(e -> {
             System.exit(0);
