@@ -5,75 +5,72 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class SimonSays {
-    private JFrame frame;
-    private JButton startButton;
+    private final JFrame frame;
+    private final JButton startButton;
+    private final JButton submitButton;
     private JButton blueButton;
     private JButton greenButton;
     private JButton redButton;
     private JButton yellowButton;
-    private JButton submitButton;
-    private JLabel scoreLabel;
-    private JLabel highScoreLabel;
-    private int[] sequence;
-    private int[] playerSequence;
+    private final JLabel scoreLabel;
+    private final JLabel highScoreLabel;
+    private final int[] sequence;
+    private final int[] playerSequence;
     private int sequenceLength;
     private int playerSequenceLength;
     private int score;
     private int highScore;
-    private Random random;
+    private final Random random;
 
     public SimonSays() {
         frame = new JFrame("Simon Says");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 1200);
-        frame.setLayout(new GridLayout(4, 2));
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window to take up the entire screen
+        frame.setLayout(new BorderLayout());
+
+        // Create a panel for the 2x2 grid of color buttons
+        JPanel colorPanel = new JPanel();
+        colorPanel.setLayout(new GridLayout(2, 2, 20, 20)); // 2x2 grid with gaps between buttons
+        colorPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50)); // Add padding around the grid
+
+        // Initialize color buttons with reduced size
+        greenButton = createColorButton(Color.GREEN);
+        redButton = createColorButton(Color.RED);
+        blueButton = createColorButton(Color.BLUE);
+        yellowButton = createColorButton(Color.YELLOW);
+
+        // Add buttons to the grid
+        colorPanel.add(greenButton);
+        colorPanel.add(redButton);
+        colorPanel.add(blueButton);
+        colorPanel.add(yellowButton);
+
+        // Create a panel for the controls (start button, score, high score, submit button)
+        JPanel controlPanel = new JPanel();
+        controlPanel.setLayout(new GridLayout(1, 4, 20, 20)); // Horizontal layout for controls
 
         startButton = new JButton("Start");
-        blueButton = new JButton();
-        blueButton.setBackground(Color.BLUE);
-        blueButton.setOpaque(true);
-        blueButton.setContentAreaFilled(true);
-        blueButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-        blueButton.setFocusPainted(false);
-
-        greenButton = new JButton();
-        greenButton.setOpaque(true);
-        greenButton.setContentAreaFilled(true);
-        greenButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-        greenButton.setFocusPainted(false);
-        greenButton.setBackground(Color.GREEN);
-
-        redButton = new JButton();
-        redButton.setBackground(Color.RED);
-        redButton.setOpaque(true);
-        redButton.setContentAreaFilled(true);
-        redButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-        redButton.setFocusPainted(false);
-
-        yellowButton = new JButton();
-        yellowButton.setBackground(Color.YELLOW);
-        yellowButton.setOpaque(true);
-        yellowButton.setContentAreaFilled(true);
-        yellowButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-        yellowButton.setFocusPainted(false);
+        startButton.setFont(new Font("Serif", Font.BOLD, 30));
 
         submitButton = new JButton("Submit");
+        submitButton.setFont(new Font("Serif", Font.BOLD, 30));
 
         scoreLabel = new JLabel("Score: 0", JLabel.CENTER);
-        scoreLabel.setFont(new Font("Serif", Font.PLAIN, 30));
+        scoreLabel.setFont(new Font("Serif", Font.BOLD, 30));
+
         highScoreLabel = new JLabel("High Score: 0", JLabel.CENTER);
-        highScoreLabel.setFont(new Font("Serif", Font.PLAIN, 30));
+        highScoreLabel.setFont(new Font("Serif", Font.BOLD, 30));
 
-        frame.add(startButton);
-        frame.add(new JLabel()); // Empty label for spacing
-        frame.add(blueButton);
-        frame.add(greenButton);
-        frame.add(redButton);
-        frame.add(yellowButton);
-        frame.add(submitButton);
-        frame.add(scoreLabel);
-        frame.add(highScoreLabel);
+        controlPanel.add(startButton);
+        controlPanel.add(submitButton);
+        controlPanel.add(scoreLabel);
+        controlPanel.add(highScoreLabel);
 
+        // Add panels to the frame
+        frame.add(colorPanel, BorderLayout.CENTER);
+        frame.add(controlPanel, BorderLayout.SOUTH);
+
+        // Initialize game variables
         sequence = new int[100]; // Arbitrary large size for the sequence
         playerSequence = new int[100];
         sequenceLength = 0;
@@ -82,30 +79,46 @@ public class SimonSays {
         highScore = 0;
         random = new Random();
 
+        // Add action listeners
         startButton.addActionListener(_ -> startGame());
         submitButton.addActionListener(_ -> checkSequence());
-
-        blueButton.addActionListener(_ -> {
-            playerSequence[playerSequenceLength] = 2;
-            playerSequenceLength++;
-        });
-        greenButton.addActionListener(_ -> {
-            playerSequence[playerSequenceLength] = 0;
-            playerSequenceLength++;
-        });
-        redButton.addActionListener(_ -> {
-            playerSequence[playerSequenceLength] = 1;
-            playerSequenceLength++;
-        });
-        yellowButton.addActionListener(_ -> {
-            playerSequence[playerSequenceLength] = 3;
-            playerSequenceLength++;
-        });
+        greenButton.addActionListener(_ -> handleButtonClick(0, greenButton));
+        redButton.addActionListener(_ -> handleButtonClick(1, redButton));
+        blueButton.addActionListener(_ -> handleButtonClick(2, blueButton));
+        yellowButton.addActionListener(_ -> handleButtonClick(3, yellowButton));
 
         frame.setVisible(true);
     }
 
-    private void startGame() {
+    private JButton createColorButton(Color color) {
+        JButton button = new JButton();
+        button.setBackground(color);
+        button.setOpaque(true);
+        button.setContentAreaFilled(true);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        button.setFocusPainted(false);
+        button.setPreferredSize(new Dimension(200, 200)); // Reduced size by 100 pixels
+        return button;
+    }
+
+    private void handleButtonClick(int colorIndex, JButton button) {
+        // Add the color to the player's sequence
+        playerSequence[playerSequenceLength] = colorIndex;
+        playerSequenceLength++;
+
+        // Provide a visual indication of the button click
+        Color originalColor = button.getBackground();
+        button.setBackground(Color.WHITE);
+        new Timer(200, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.setBackground(originalColor);
+                ((Timer) e.getSource()).stop();
+            }
+        }).start();
+    }
+
+    void startGame() {
         sequenceLength = 0;
         playerSequenceLength = 0;
         score = 0;
@@ -124,62 +137,60 @@ public class SimonSays {
             for (int i = 0; i < sequenceLength; i++) {
                 switch (sequence[i]) {
                     case 0:
-                        colorFlash(greenButton, 2);
+                        colorFlash(greenButton, 500); // Flash duration in milliseconds
                         break;
                     case 1:
-                        colorFlash(redButton, 2);
+                        colorFlash(redButton, 500);
                         break;
                     case 2:
-                        colorFlash(blueButton, 2);
+                        colorFlash(blueButton, 500);
                         break;
                     case 3:
-                        colorFlash(yellowButton, 2);
+                        colorFlash(yellowButton, 500);
                         break;
                 }
                 try {
-                    Thread.sleep(1500); // Pause for 1.5 seconds between flashes to include the gap
+                    Thread.sleep(1000); // Delay between flashes
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
+            // Reset player sequence length after the sequence is played
+            playerSequenceLength = 0;
         }).start();
     }
 
     private void colorFlash(JButton button, int duration) {
         Color originalColor = button.getBackground();
-        button.setBackground(Color.WHITE);
-        new Timer(duration * 500, new ActionListener() {
+        button.setBackground(Color.WHITE); // Flash to white
+        new Timer(duration, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                button.setBackground(originalColor);
+                button.setBackground(originalColor); // Reset to original color
                 ((Timer) e.getSource()).stop();
             }
         }).start();
     }
 
     private void checkSequence() {
-        if (playerSequenceLength != sequenceLength) {
-            JOptionPane.showMessageDialog(frame, "Game Over! You reached a sequence length of " + sequenceLength);
-            if (score > highScore) {
-                highScore = score;
-                highScoreLabel.setText("High Score: " + highScore);
-            }
-            return;
-        }
-        for (int i = 0; i < sequenceLength; i++) {
-            if (sequence[i] != playerSequence[i]) {
-                if (score > highScore) {
-                    highScore = score;
-                    highScoreLabel.setText("High Score: " + highScore);
-                }
-                return;
+        boolean correct = true;
+        for (int i = 0; i < playerSequenceLength; i++) {
+            if (playerSequence[i] != sequence[i]) {
+                correct = false;
+                break;
             }
         }
-        playerSequenceLength = 0;
-        score++;
-        scoreLabel.setText("Score: " + score);
-        generateSequence();
-        playSequence();
+
+        if (correct && playerSequenceLength == sequenceLength) {
+            score++;
+            highScore = Math.max(highScore, score);
+            scoreLabel.setText("Score: " + score);
+            highScoreLabel.setText("High Score: " + highScore);
+            generateSequence();
+            playSequence();
+        } else if (!correct) {
+            JOptionPane.showMessageDialog(frame, "Incorrect sequence! Game over.");
+            startGame();
+        }
     }
 
     public static void main(String[] args) {

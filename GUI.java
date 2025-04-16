@@ -1,28 +1,41 @@
-
-import javax.swing.*;
 import java.awt.*;
-
-
+import javax.swing.*;
 
 public class GUI {
-    static int buttonHeight = 100;
-    static int buttonSides = 10;
-    static int gapHeight = 50;
+
     @SuppressWarnings("unused")
-    public static void mainMenu(){
+    public static void mainMenu() {
         JFrame frame = new JFrame("Mini Games");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 1200);
-        frame.setLayout(new FlowLayout());
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window to take up the entire screen
+        frame.setLayout(new BorderLayout());
 
+        // Create a panel for the buttons with GridLayout
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(4, 1, 20, 20)); // 4 rows, 1 column, with 20px gaps
+
+        // Create buttons
         JButton simonSaysButton = new JButton("Simon Says");
         JButton sliderColorsButton = new JButton("Slider Colors");
         JButton hangManButton = new JButton("HangMan");
         JButton exitButton = new JButton("Exit");
 
+        // Set font size for buttons to make them larger
+        Font buttonFont = new Font("Serif", Font.BOLD, 40);
+        simonSaysButton.setFont(buttonFont);
+        sliderColorsButton.setFont(buttonFont);
+        hangManButton.setFont(buttonFont);
+        exitButton.setFont(buttonFont);
+
+        // Add buttons to the panel
+        buttonPanel.add(simonSaysButton);
+        buttonPanel.add(sliderColorsButton);
+        buttonPanel.add(hangManButton);
+        buttonPanel.add(exitButton);
+
+        // Add action listeners for buttons
         simonSaysButton.addActionListener(e -> {
             new SimonSays();
-
         });
         sliderColorsButton.addActionListener(e -> {
             new SliderColor();
@@ -34,55 +47,17 @@ public class GUI {
             HangMan hangMan = new HangMan();
             hangMan.hangMan();
         });
-
         exitButton.addActionListener(e -> {
             System.exit(0);
         });
 
-        // simonSaysButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-        // simonSaysButton.setBorder(BorderFactory.createEmptyBorder(buttonHeight, buttonSides, buttonHeight, buttonSides));
-        // sliderColorsButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-        // sliderColorsButton.setBorder(BorderFactory.createEmptyBorder(buttonHeight, buttonSides, buttonHeight, buttonSides));
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, 1));
-        panel.setPreferredSize(new Dimension(800, 1000));
-        JLabel label = new JLabel("Mini Games");
-        JLabel label2 = new JLabel("By Devin Baysa");
+        // Add a title label at the top
+        JLabel titleLabel = new JLabel("Mini Games", JLabel.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 60)); // Larger font for the title
+        frame.add(titleLabel, BorderLayout.NORTH);
 
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setFont(new Font("Serif", Font.PLAIN, 40));
-        
-        panel.add(label);
-        panel.add(label2);
-        panel.add(Box.createRigidArea(new Dimension(0, gapHeight)));
-
-        frame.add(panel);
-
-        panel.add(simonSaysButton);
-        panel.add(Box.createRigidArea(new Dimension(0, gapHeight)));
-
-        panel.add(sliderColorsButton);
-        panel.add(Box.createRigidArea(new Dimension(0, gapHeight)));
-
-        panel.add(hangManButton);
-        panel.add(Box.createRigidArea(new Dimension(0, gapHeight)));
-
-        panel.add(exitButton);
-        simonSaysButton.setPreferredSize(new Dimension(150, 50));
-        sliderColorsButton.setPreferredSize(new Dimension(150, 50));
-        hangManButton.setPreferredSize(new Dimension(150, 50));
-        exitButton.setPreferredSize(new Dimension(150, 50));
-        simonSaysButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        sliderColorsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        hangManButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        simonSaysButton.add(Box.createVerticalStrut(buttonHeight));
-        sliderColorsButton.add(Box.createVerticalStrut(buttonHeight));
-        hangManButton.add(Box.createVerticalStrut(buttonHeight));
-        exitButton.add(Box.createVerticalStrut(buttonHeight));
-        
-
+        // Add the button panel to the center of the frame
+        frame.add(buttonPanel, BorderLayout.CENTER);
 
         frame.setVisible(true);
     }

@@ -9,7 +9,6 @@ import java.util.List;
 public class HangMan {
     private String word;
     private StringBuilder guessedWord;
-    private Set<Character> guessedLetters;
     private int attempts;
     private JLabel wordLabel;
     private JLabel attemptsLabel;
@@ -23,6 +22,7 @@ public class HangMan {
             JFrame categoryFrame = new JFrame("Select Category");
             categoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             categoryFrame.setSize(1000, 1200);
+            categoryFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window
             categoryFrame.setLayout(new GridBagLayout());
 
             GridBagConstraints gbc = new GridBagConstraints();
@@ -43,24 +43,11 @@ public class HangMan {
             String[] categories = {"Animals", "Fruits", "Countries", "Cities", "Sports", "Movies", "Books", "Music", "Food", "Colors"};
             JComboBox<String> categoryComboBox = new JComboBox<>(categories);
             categoryComboBox.setFont(new Font("Serif", Font.PLAIN, 20));
-
-            // Set the preferred size of the JComboBox to adjust its height
-            categoryComboBox.setPreferredSize(new Dimension(400, 60)); // Adjust width and height as needed
-            categoryComboBox.setBounds(50, 100, 400, 300); // Set bounds for the JComboBox
-            // Set a custom renderer to adjust the height of the dropdown items
-            categoryComboBox.setRenderer(new DefaultListCellRenderer() {
-                @Override
-                public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                    JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    label.setPreferredSize(new Dimension(0, 50)); // Adjust the height of each dropdown item
-                    return label;
-                }
-            });
             gbc.gridx = 0;
             gbc.gridy = 1;
             gbc.gridwidth = 2;
             gbc.weightx = 1;
-            gbc.weighty = 0; // Equal vertical weight
+            gbc.weighty = 0.5; // Adjust vertical weight
             categoryFrame.add(categoryComboBox, gbc);
 
             // Add the start button
@@ -73,7 +60,6 @@ public class HangMan {
             gbc.weighty = 1; // Equal vertical weight
             categoryFrame.add(startButton, gbc);
 
-            // Add action listener to the start button
             startButton.addActionListener(_ -> {
                 String selectedCategory = (String) categoryComboBox.getSelectedItem();
                 categoryFrame.dispose();
@@ -86,12 +72,12 @@ public class HangMan {
 
     private void startGame(String categoryName) {
         loadRandomWord(categoryName);
-        guessedLetters = new HashSet<>();
+        new HashSet<>();
         attempts = 6; // Number of allowed incorrect attempts
 
         JFrame frame = new JFrame("Hangman Game");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 1200);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window
         frame.setLayout(new BorderLayout());
 
         categoryLabel = new JLabel("Category: " + categoryName, JLabel.CENTER);
@@ -122,67 +108,7 @@ public class HangMan {
         solveButton = new JButton("Solve Word");
         solveButton.setFont(new Font("Serif", Font.PLAIN, 30));
 
-        guessButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String input = guessField.getText().toLowerCase();
-                if (input.length() != 1) {
-                    JOptionPane.showMessageDialog(frame, "Please enter a single letter.");
-                    return;
-                }
-                char guess = input.charAt(0);
-                if (guessedLetters.contains(guess)) {
-                    JOptionPane.showMessageDialog(frame, "You already guessed that letter.");
-                    return;
-                }
-
-                guessedLetters.add(guess);
-
-                if (word.contains(String.valueOf(guess))) {
-                    for (int i = 0; i < word.length(); i++) {
-                        if (word.charAt(i) == guess) {
-                            guessedWord.setCharAt(i * 2, guess);
-                        }
-                    }
-                } else {
-                    attempts--;
-                }
-
-                wordLabel.setText("Word: " + guessedWord.toString());
-                attemptsLabel.setText("Attempts left: " + attempts);
-                guessField.setText("");
-
-                if (guessedWord.toString().replace(" ", "").equals(word)) {
-                    JOptionPane.showMessageDialog(frame, "Congratulations! You guessed the word: " + word);
-                    resetGame(categoryName);
-                } else if (attempts == 0) {
-                    JOptionPane.showMessageDialog(frame, "Game over. The word was: " + word);
-                    resetGame(categoryName);
-                }
-            }
-        });
-
-        solveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String input = guessField.getText().toLowerCase();
-                if (input.equals(word)) {
-                    JOptionPane.showMessageDialog(frame, "Congratulations! You guessed the word: " + word);
-                    resetGame(categoryName);
-                } else {
-                    attempts--;
-                    attemptsLabel.setText("Attempts left: " + attempts);
-                    guessField.setText("");
-                    if (attempts == 0) {
-                        JOptionPane.showMessageDialog(frame, "Game over. The word was: " + word);
-                        resetGame(categoryName);
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Incorrect guess. Try again.");
-                    }
-                }
-            }
-        });
-
+        // Add components to the frame
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(2, 2));
         inputPanel.add(new JLabel("Enter a letter or word: ", JLabel.CENTER));
@@ -194,9 +120,9 @@ public class HangMan {
         topPanel.add(categoryLabel);
         topPanel.add(attemptsLabel);
 
-        frame.add(topPanel, BorderLayout.NORTH); // Add category and attempts to the top
-        frame.add(wordLabel, BorderLayout.CENTER); // Add the word display to the center
-        frame.add(inputPanel, BorderLayout.SOUTH); // Add input panel to the bottom
+        frame.add(topPanel, BorderLayout.NORTH);
+        frame.add(wordLabel, BorderLayout.CENTER);
+        frame.add(inputPanel, BorderLayout.SOUTH);
 
         frame.setVisible(true);
     }
@@ -230,15 +156,6 @@ public class HangMan {
                 guessedWord.append("_ ");
             }
         }
-    }
-
-    private void resetGame(String categoryName) {
-        loadRandomWord(categoryName);
-        guessedLetters = new HashSet<>();
-        attempts = 6;
-        wordLabel.setText("Word: " + guessedWord.toString());
-        attemptsLabel.setText("Attempts left: " + attempts);
-        guessField.setText(""); // Clear the text box
     }
 
     public static void main(String[] args) {
