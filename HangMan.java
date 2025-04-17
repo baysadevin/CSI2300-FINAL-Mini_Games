@@ -1,12 +1,8 @@
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import javax.swing.*;
 
 public class HangMan {
     private String word;
@@ -110,15 +106,12 @@ public class HangMan {
         guessField.setFont(new Font("Serif", Font.PLAIN, 30));
 
         // Add ActionListener to allow pressing "Enter" to submit the guess
-        guessField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String input = guessField.getText().trim().toLowerCase();
-                if (input.length() == 1) {
-                    guessButton.doClick(); // Simulate a button click on the "Guess Letter" button
-                } else if (input.length() > 1) {
-                    solveButton.doClick(); // Simulate a button click on the "Solve Word" button
-                }
+        guessField.addActionListener(e -> {
+            String input = guessField.getText().trim().toLowerCase();
+            if (input.length() == 1) {
+                guessButton.doClick(); // Simulate a button click on the "Guess Letter" button
+            } else if (input.length() > 1) {
+                solveButton.doClick(); // Simulate a button click on the "Solve Word" button
             }
         });
 
@@ -148,8 +141,7 @@ public class HangMan {
                 wordLabel.setText("Word: " + guessedWord.toString());
                 if (!guessedWord.toString().contains("_")) {
                     JOptionPane.showMessageDialog(frame, "Congratulations! You guessed the word!");
-                    frame.dispose();
-                    hangMan(); // Return to category selection
+                    restartGame(frame, categoryName); // Restart the game in the same category
                 }
             } else {
                 attempts--; // Decrement attempts for incorrect guess
@@ -157,14 +149,31 @@ public class HangMan {
 
                 if (attempts == 0) {
                     JOptionPane.showMessageDialog(frame, "Game Over! The word was: " + word);
-                    frame.dispose();
-                    hangMan(); // Return to category selection
+                    restartGame(frame, categoryName); // Restart the game in the same category
                 }
             }
         });
 
         solveButton = new JButton("Solve Word");
         solveButton.setFont(new Font("Serif", Font.PLAIN, 30));
+        solveButton.addActionListener(e -> {
+            String input = guessField.getText().trim().toLowerCase();
+            guessField.setText(""); // Clear the input field
+
+            if (input.equals(word)) {
+                wordLabel.setText("Word: " + word.replace("", " ").trim()); // Reveal the full word
+                JOptionPane.showMessageDialog(frame, "Congratulations! You solved the word!");
+                restartGame(frame, categoryName); // Restart the game in the same category
+            } else {
+                attempts--; // Decrement attempts for incorrect guess
+                attemptsLabel.setText("Attempts left: " + attempts);
+
+                if (attempts == 0) {
+                    JOptionPane.showMessageDialog(frame, "Game Over! The word was: " + word);
+                    restartGame(frame, categoryName); // Restart the game in the same category
+                }
+            }
+        });
 
         JPanel topPanel = new JPanel(new GridLayout(2, 1));
         topPanel.add(categoryLabel);
@@ -204,6 +213,11 @@ public class HangMan {
         frame.add(bottomPanel, BorderLayout.PAGE_END); // Add the bottom panel at the bottom
 
         frame.setVisible(true);
+    }
+
+    private void restartGame(JFrame frame, String categoryName) {
+        frame.dispose(); // Close the current game window
+        startGame(categoryName); // Restart the game in the same category
     }
 
     private void loadRandomWord(String categoryName) {
