@@ -8,17 +8,17 @@ public class SliderColor {
     public static void sliderColor() {
         JFrame frame = new JFrame("Slider Example");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window to take up the entire screen
-        frame.setLayout(new GridBagLayout()); // Use GridBagLayout for flexible layout
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        frame.setLayout(new GridBagLayout()); 
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(20, 20, 20, 20); // Add padding around components
-        gbc.fill = GridBagConstraints.BOTH; // Allow components to expand
+        gbc.insets = new Insets(20, 20, 20, 20); 
+        gbc.fill = GridBagConstraints.BOTH; 
 
-        // Standardized font for all components
+        
         Font standardFont = new Font("Serif", Font.BOLD, 30);
 
-        // Create labels for the sliders
+        
         JLabel redLabel = new JLabel("Red", JLabel.CENTER);
         JLabel greenLabel = new JLabel("Green", JLabel.CENTER);
         JLabel blueLabel = new JLabel("Blue", JLabel.CENTER);
@@ -26,7 +26,7 @@ public class SliderColor {
         greenLabel.setFont(standardFont);
         blueLabel.setFont(standardFont);
 
-        // Create sliders for red, green, and blue
+        
         JSlider redSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255); // Default to white
         JSlider greenSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255); // Default to white
         JSlider blueSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255); // Default to white
@@ -49,20 +49,20 @@ public class SliderColor {
         blueSlider.setPaintLabels(true);
         blueSlider.setFont(standardFont);
 
-        // Create a label that changes color
+        
         JLabel changingLabel = new JLabel("Color Label", JLabel.CENTER);
         changingLabel.setOpaque(true);
-        changingLabel.setBackground(Color.WHITE); // Default to white
+        changingLabel.setBackground(Color.WHITE);
         changingLabel.setFont(standardFont);
 
-        // Create a label with a random color
+        
         JLabel randomColorLabel = new JLabel("Random Color Label", JLabel.CENTER);
         randomColorLabel.setOpaque(true);
         Random rand = new Random();
         randomColorLabel.setBackground(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
         randomColorLabel.setFont(standardFont);
 
-        // Add a ChangeListener to the sliders
+        
         ChangeListener changeListener = _ -> {
             int red = redSlider.getValue();
             int green = greenSlider.getValue();
@@ -74,53 +74,53 @@ public class SliderColor {
         greenSlider.addChangeListener(changeListener);
         blueSlider.addChangeListener(changeListener);
 
-        // Create a submit button
+        
         JButton submitButton = new JButton("Submit");
         submitButton.setFont(standardFont);
 
         JLabel resultLabel = new JLabel("Similarity: ", JLabel.CENTER);
         resultLabel.setFont(standardFont);
 
-        // Create a label to display the highest similarity (high score)
+        
         JLabel highScoreLabel = new JLabel("High Score: 0.00%", JLabel.CENTER);
         highScoreLabel.setFont(standardFont);
 
-        // Create a panel to hold the similarity and high score labels
+        
         JPanel similarityPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10)); // Horizontal alignment with spacing
         similarityPanel.add(resultLabel);
         similarityPanel.add(highScoreLabel);
 
-        // Add the similarity panel to the frame
-        gbc.gridy = 6; // Place it where the result label was
+        
+        gbc.gridy = 6; 
         gbc.gridwidth = 2;
         frame.add(similarityPanel, gbc);
 
-        // Track the highest similarity percentage
-        double[] highScore = {0.0}; // Array to hold the high score (mutable for lambda)
+       
+        double[] highScore = {0.0}; 
 
-        // Add action listener to the submit button
+        
         submitButton.addActionListener(_ -> {
             Color color1 = changingLabel.getBackground();
             Color color2 = randomColorLabel.getBackground();
             double similarity = calculateColorSimilarity(color1, color2);
             resultLabel.setText(String.format("Similarity: %.2f%%", similarity * 100));
 
-            // Update the high score if the current similarity is greater
+            
             if (similarity > highScore[0]) {
                 highScore[0] = similarity;
                 highScoreLabel.setText(String.format("High Score: %.2f%%", similarity * 100));
             }
 
-            // Generate a new random color for the randomColorLabel
+            
             randomColorLabel.setBackground(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
 
-            // Reset sliders to white
+            
             redSlider.setValue(255);
             greenSlider.setValue(255);
             blueSlider.setValue(255);
         });
 
-        // Add components to the frame using GridBagLayout
+        
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;

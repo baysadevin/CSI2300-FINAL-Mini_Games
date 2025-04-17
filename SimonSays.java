@@ -25,29 +25,29 @@ public class SimonSays {
     public SimonSays() {
         frame = new JFrame("Simon Says");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window to take up the entire screen
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         frame.setLayout(new BorderLayout());
 
-        // Create a panel for the 2x2 grid of color buttons
+        
         JPanel colorPanel = new JPanel();
-        colorPanel.setLayout(new GridLayout(2, 2, 20, 20)); // 2x2 grid with gaps between buttons
-        colorPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50)); // Add padding around the grid
+        colorPanel.setLayout(new GridLayout(2, 2, 20, 20)); 
+        colorPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
-        // Initialize color buttons with reduced size
+        
         greenButton = createColorButton(Color.GREEN);
         redButton = createColorButton(Color.RED);
         blueButton = createColorButton(Color.BLUE);
         yellowButton = createColorButton(Color.YELLOW);
 
-        // Add buttons to the grid
+        
         colorPanel.add(greenButton);
         colorPanel.add(redButton);
         colorPanel.add(blueButton);
         colorPanel.add(yellowButton);
 
-        // Create a panel for the controls (start button, score, high score, submit button)
+        
         JPanel controlPanel = new JPanel();
-        controlPanel.setLayout(new GridLayout(1, 4, 20, 20)); // Horizontal layout for controls
+        controlPanel.setLayout(new GridLayout(1, 4, 20, 20)); 
 
         startButton = new JButton("Start");
         startButton.setFont(new Font("Serif", Font.BOLD, 30));
@@ -66,12 +66,12 @@ public class SimonSays {
         controlPanel.add(scoreLabel);
         controlPanel.add(highScoreLabel);
 
-        // Add panels to the frame
+        
         frame.add(colorPanel, BorderLayout.CENTER);
         frame.add(controlPanel, BorderLayout.SOUTH);
 
-        // Initialize game variables
-        sequence = new int[100]; // Arbitrary large size for the sequence
+        
+        sequence = new int[100]; 
         playerSequence = new int[100];
         sequenceLength = 0;
         playerSequenceLength = 0;
@@ -79,7 +79,7 @@ public class SimonSays {
         highScore = 0;
         random = new Random();
 
-        // Add action listeners
+        
         startButton.addActionListener(_ -> startGame());
         submitButton.addActionListener(_ -> checkSequence());
         greenButton.addActionListener(_ -> handleButtonClick(0, greenButton));
@@ -102,11 +102,11 @@ public class SimonSays {
     }
 
     private void handleButtonClick(int colorIndex, JButton button) {
-        // Add the color to the player's sequence
+        
         playerSequence[playerSequenceLength] = colorIndex;
         playerSequenceLength++;
 
-        // Provide a visual indication of the button click
+        
         Color originalColor = button.getBackground();
         button.setBackground(Color.WHITE);
         new Timer(200, new ActionListener() {
@@ -137,7 +137,7 @@ public class SimonSays {
             for (int i = 0; i < sequenceLength; i++) {
                 switch (sequence[i]) {
                     case 0:
-                        colorFlash(greenButton, 500); // Flash duration in milliseconds
+                        colorFlash(greenButton, 500); 
                         break;
                     case 1:
                         colorFlash(redButton, 500);
@@ -150,22 +150,22 @@ public class SimonSays {
                         break;
                 }
                 try {
-                    Thread.sleep(1000); // Delay between flashes
+                    Thread.sleep(1000); 
                 } catch (InterruptedException e) {
                 }
             }
-            // Reset player sequence length after the sequence is played
+            
             playerSequenceLength = 0;
         }).start();
     }
 
     private void colorFlash(JButton button, int duration) {
         Color originalColor = button.getBackground();
-        button.setBackground(Color.WHITE); // Flash to white
+        button.setBackground(Color.WHITE); 
         new Timer(duration, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                button.setBackground(originalColor); // Reset to original color
+                button.setBackground(originalColor); 
                 ((Timer) e.getSource()).stop();
             }
         }).start();

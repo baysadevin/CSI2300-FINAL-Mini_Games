@@ -4,6 +4,7 @@ Chicago
 Houston
 Phoenix
 Philadelphia
+Toledo
 San Antonio
 San Diego
 Dallas

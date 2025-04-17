@@ -20,28 +20,28 @@ public class HangMan {
             JFrame categoryFrame = new JFrame("Select Category");
             categoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             categoryFrame.setSize(1000, 1200);
-            categoryFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window
+            categoryFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
             categoryFrame.setLayout(new GridBagLayout());
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.fill = GridBagConstraints.BOTH;
             gbc.insets = new Insets(10, 10, 10, 10);
 
-            // Add the category label
+            
             JLabel categoryLabel = new JLabel("Select a category:", JLabel.CENTER);
             categoryLabel.setFont(new Font("Serif", Font.PLAIN, 50));
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 2;
             gbc.weightx = 1;
-            gbc.weighty = 0.1; // Adjust vertical weight
+            gbc.weighty = 0.1; 
             categoryFrame.add(categoryLabel, gbc);
 
-            // Create a panel for radio buttons
+          
             JPanel radioPanel = new JPanel();
-            radioPanel.setLayout(new GridLayout(0, 1, 10, 10)); // Vertical layout with spacing
+            radioPanel.setLayout(new GridLayout(0, 1, 10, 10)); 
 
-            // Create radio buttons for each category
+            
             String[] categories = {"Animals", "Fruits", "Countries", "Cities", "Sports", "Movies", "Books", "Music", "Food", "Colors"};
             ButtonGroup group = new ButtonGroup();
             for (String category : categories) {
@@ -51,25 +51,25 @@ public class HangMan {
                 radioPanel.add(radioButton);
             }
 
-            // Add the radio panel to the frame
+            
             gbc.gridx = 0;
             gbc.gridy = 1;
             gbc.gridwidth = 2;
             gbc.weightx = 1;
-            gbc.weighty = 0.7; // Adjust vertical weight
+            gbc.weighty = 0.7; 
             categoryFrame.add(radioPanel, gbc);
 
-            // Add the start button
+            
             JButton startButton = new JButton("Start Game");
             startButton.setFont(new Font("Serif", Font.PLAIN, 40));
             gbc.gridx = 0;
             gbc.gridy = 2;
             gbc.gridwidth = 2;
             gbc.weightx = 1;
-            gbc.weighty = 0.2; // Adjust vertical weight
+            gbc.weighty = 0.2; 
             categoryFrame.add(startButton, gbc);
 
-            // Add action listener to the start button
+            
             startButton.addActionListener(_ -> {
                 for (Component comp : radioPanel.getComponents()) {
                     if (comp instanceof JRadioButton && ((JRadioButton) comp).isSelected()) {
@@ -88,11 +88,11 @@ public class HangMan {
 
     private void startGame(String categoryName) {
         loadRandomWord(categoryName);
-        attempts = 6; // Number of allowed incorrect attempts
+        attempts = 6; 
 
         JFrame frame = new JFrame("Hangman Game");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         frame.setLayout(new BorderLayout());
 
         categoryLabel = new JLabel("Category: " + categoryName, JLabel.CENTER);
@@ -105,13 +105,13 @@ public class HangMan {
         guessField = new JTextField(10);
         guessField.setFont(new Font("Serif", Font.PLAIN, 30));
 
-        // Add ActionListener to allow pressing "Enter" to submit the guess
+       
         guessField.addActionListener(e -> {
             String input = guessField.getText().trim().toLowerCase();
             if (input.length() == 1) {
-                guessButton.doClick(); // Simulate a button click on the "Guess Letter" button
+                guessButton.doClick();
             } else if (input.length() > 1) {
-                solveButton.doClick(); // Simulate a button click on the "Solve Word" button
+                solveButton.doClick(); 
             }
         });
 
@@ -119,7 +119,7 @@ public class HangMan {
         guessButton.setFont(new Font("Serif", Font.PLAIN, 30));
         guessButton.addActionListener(e -> {
             String input = guessField.getText().trim().toLowerCase();
-            guessField.setText(""); // Clear the input field
+            guessField.setText(""); 
 
             if (input.length() != 1) {
                 JOptionPane.showMessageDialog(frame, "Please enter a single letter.");
@@ -129,10 +129,10 @@ public class HangMan {
             char guessedLetter = input.charAt(0);
             boolean correctGuess = false;
 
-            // Check if the guessed letter is in the word
+            
             for (int i = 0; i < word.length(); i++) {
                 if (word.charAt(i) == guessedLetter) {
-                    guessedWord.setCharAt(i * 2, guessedLetter); // Update the guessed word
+                    guessedWord.setCharAt(i * 2, guessedLetter);
                     correctGuess = true;
                 }
             }
@@ -141,15 +141,15 @@ public class HangMan {
                 wordLabel.setText("Word: " + guessedWord.toString());
                 if (!guessedWord.toString().contains("_")) {
                     JOptionPane.showMessageDialog(frame, "Congratulations! You guessed the word!");
-                    restartGame(frame, categoryName); // Restart the game in the same category
+                    restartGame(frame, categoryName); 
                 }
             } else {
-                attempts--; // Decrement attempts for incorrect guess
+                attempts--; 
                 attemptsLabel.setText("Attempts left: " + attempts);
 
                 if (attempts == 0) {
                     JOptionPane.showMessageDialog(frame, "Game Over! The word was: " + word);
-                    restartGame(frame, categoryName); // Restart the game in the same category
+                    restartGame(frame, categoryName); 
                 }
             }
         });
@@ -158,19 +158,19 @@ public class HangMan {
         solveButton.setFont(new Font("Serif", Font.PLAIN, 30));
         solveButton.addActionListener(e -> {
             String input = guessField.getText().trim().toLowerCase();
-            guessField.setText(""); // Clear the input field
+            guessField.setText(""); 
 
             if (input.equals(word)) {
                 wordLabel.setText("Word: " + word.replace("", " ").trim()); // Reveal the full word
                 JOptionPane.showMessageDialog(frame, "Congratulations! You solved the word!");
-                restartGame(frame, categoryName); // Restart the game in the same category
+                restartGame(frame, categoryName); 
             } else {
-                attempts--; // Decrement attempts for incorrect guess
+                attempts--; 
                 attemptsLabel.setText("Attempts left: " + attempts);
 
                 if (attempts == 0) {
                     JOptionPane.showMessageDialog(frame, "Game Over! The word was: " + word);
-                    restartGame(frame, categoryName); // Restart the game in the same category
+                    restartGame(frame, categoryName); 
                 }
             }
         });
@@ -179,45 +179,45 @@ public class HangMan {
         topPanel.add(categoryLabel);
         topPanel.add(attemptsLabel);
 
-        // Add a panel for the buttons and text field at the bottom
+       
         JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new GridLayout(3, 1, 10, 10)); // Three rows with spacing
+        bottomPanel.setLayout(new GridLayout(3, 1, 10, 10));
 
-        // Add the text field for submissions
+    
         JPanel inputFieldPanel = new JPanel();
         inputFieldPanel.setLayout(new BorderLayout());
         inputFieldPanel.add(new JLabel("Enter a letter or word: ", JLabel.CENTER), BorderLayout.WEST);
         inputFieldPanel.add(guessField, BorderLayout.CENTER);
 
-        // Add the "Solve Word" and "Guess Letter" buttons to the second row
+        
         JPanel actionButtonsPanel = new JPanel();
-        actionButtonsPanel.setLayout(new GridLayout(1, 2, 10, 10)); // Horizontal layout for buttons
+        actionButtonsPanel.setLayout(new GridLayout(1, 2, 10, 10)); 
         actionButtonsPanel.add(guessButton);
         actionButtonsPanel.add(solveButton);
 
-        // Add the "Return to Categories" button to the third row
+        
         JButton returnButton = new JButton("Return to Categories");
         returnButton.setFont(new Font("Serif", Font.BOLD, 40));
         returnButton.addActionListener(e -> {
-            frame.dispose(); // Close the current game window
-            hangMan(); // Reopen the category selection window
+            frame.dispose(); 
+            hangMan(); 
         });
 
-        bottomPanel.add(inputFieldPanel); // Add the text field to the first row
-        bottomPanel.add(actionButtonsPanel); // Add action buttons to the second row
-        bottomPanel.add(returnButton); // Add the return button to the third row
+        bottomPanel.add(inputFieldPanel); 
+        bottomPanel.add(actionButtonsPanel); 
+        bottomPanel.add(returnButton); 
 
-        // Add components to the frame
+        
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(wordLabel, BorderLayout.CENTER);
-        frame.add(bottomPanel, BorderLayout.PAGE_END); // Add the bottom panel at the bottom
+        frame.add(bottomPanel, BorderLayout.PAGE_END); 
 
         frame.setVisible(true);
     }
 
     private void restartGame(JFrame frame, String categoryName) {
-        frame.dispose(); // Close the current game window
-        startGame(categoryName); // Restart the game in the same category
+        frame.dispose(); 
+        startGame(categoryName); 
     }
 
     private void loadRandomWord(String categoryName) {
@@ -240,11 +240,11 @@ public class HangMan {
         Random random = new Random();
         word = words.get(random.nextInt(words.size())).toLowerCase();
 
-        // Initialize guessedWord with underscores and automatically fill spaces
+        
         guessedWord = new StringBuilder();
         for (char c : word.toCharArray()) {
             if (c == ' ') {
-                guessedWord.append("  "); // Add a space for spaces in the word
+                guessedWord.append("  "); 
             } else {
                 guessedWord.append("_ ");
             }
